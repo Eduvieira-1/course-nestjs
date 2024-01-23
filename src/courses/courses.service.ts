@@ -21,7 +21,7 @@ export class CoursesService {
     return this.courses;
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     const course = this.courses.find((course) => course.id === Number(id));
 
     if (!course) {
@@ -39,7 +39,7 @@ export class CoursesService {
     return createCourseDto;
   }
 
-  update(id: string, updateCourseDto: any) {
+  update(id: number, updateCourseDto: any) {
     const indexCourse = this.courses.findIndex(
       (course) => course.id === Number(id),
     );
@@ -47,7 +47,7 @@ export class CoursesService {
     this.courses[indexCourse] = updateCourseDto;
   }
 
-  remove(id: string) {
+  remove(id: number) {
     const indexCourse = this.courses.findIndex(
       (course) => course.id === Number(id),
     );

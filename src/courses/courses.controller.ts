@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from "@nestjs/common";
 import { CreateCourseDto } from "./dto/create-course.dto/create-course.dto";
 import { updateCourseDto } from "./dto/create-course.dto/update-course.dto";
@@ -23,7 +24,7 @@ export class CoursesController {
   @Get(":id")
   // findOne(@Param() params){
   //desestruturação
-  findOne(@Param("id") id: string) {
+  findOne(@Param("id") id: number) {
     return this.coursesService.findOne(id);
   }
 
@@ -35,13 +36,13 @@ export class CoursesController {
     return this.coursesService.create(createCourseDto);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateCourseDto: updateCourseDto) {
+  @Put(":id")
+  update(@Param("id") id: number, @Body() updateCourseDto: updateCourseDto) {
     return this.coursesService.update(id, updateCourseDto);
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
+  remove(@Param("id") id: number) {
     return this.coursesService.remove(id);
   }
 }
