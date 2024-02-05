@@ -14,6 +14,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: 'devtraining',
   entities: [Course, Tag],
   synchronize: true,
+  logging: false,
 }
 
 @Module({

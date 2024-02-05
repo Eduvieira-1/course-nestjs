@@ -1,3 +1,6 @@
+import { updateCourseDto } from './dto/create-course.dto/update-course.dto';
+import { CreateCourseDto } from './dto/create-course.dto/create-course.dto';
+import { Tag } from './entities/tags.entity';
 import { HttpStatus } from "@nestjs/common";
 /*
 https://docs.nestjs.com/providers#services
@@ -14,6 +17,8 @@ export class CoursesService {
   constructor(
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
   ) {}
 
   async findAll() {
@@ -35,16 +40,33 @@ export class CoursesService {
     return course;
   }
 
-  async create(createCourseDto: any) {
-    const course = this.courseRepository.create(createCourseDto);
-    return this.courseRepository.save(course);
+  async create(createCourseDto: CreateCourseDto) {
+    const tags = await Promise.all(
+      createCourseDto.tags.map(name => this.preloadTagByName(name)),
+      )
+      const course = this.courseRepository.create({
+        ...createCourseDto,
+        tags
+      })
+      
+      console.log('curso aqui', course);
+    
+
+   return this.courseRepository.save(course)
   }
 
-  async update(id: number, updateCourseDto: any) {
+  async update(id: number, updateCourseDto: updateCourseDto) {
+    const tags = 
+    updateCourseDto.tags &&
+    (await Promise.all(
+      updateCourseDto.tags.map(name => this.preloadTagByName(name)),
+    ))
+
     const course = await this.courseRepository.preload({
       ...updateCourseDto,
       id,
-    });
+      tags
+    })
 
     if (!course) {
       throw new NotFoundException(`Course ID ${id} not found`);
@@ -63,5 +85,15 @@ export class CoursesService {
     }
 
     return this.courseRepository.remove(course)
+  }
+
+  private async preloadTagByName(name: string): Promise<Tag>{
+    const tag = await this.tagRepository.findOne({ where: { name }})
+    
+    if(tag){
+      return tag 
+    }
+
+    return this.tagRepository.create({name})
   }
 }
