@@ -24,7 +24,7 @@ export class CoursesController {
   @Get(":id")
   // findOne(@Param() params){
   //desestruturação
-  findOne(@Param("id") id: number) {
+  findOne(@Param("id") id: string) {
     return this.coursesService.findOne(id);
   }
 
@@ -37,12 +37,12 @@ export class CoursesController {
   }
 
   @Put(":id")
-  update(@Param("id") id: number, @Body() updateCourseDto: updateCourseDto) {
+  update(@Param("id") id: string, @Body() updateCourseDto: updateCourseDto) {
     return this.coursesService.update(id, updateCourseDto);
   }
 
   @Delete(":id")
-  remove(@Param("id") id: number) {
+  remove(@Param("id") id: string) {
     return this.coursesService.remove(id);
   }
 }
