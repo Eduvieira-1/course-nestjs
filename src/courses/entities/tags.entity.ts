@@ -1,26 +1,34 @@
-import { randomUUID } from 'crypto';
-import { Course } from 'src/courses/entities/course.entity';
-import { BeforeInsert, Column, CreateDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
+
+import { randomUUID } from 'node:crypto'
+import { Course } from './course.entity'
 
 @Entity('tags')
-export class Tag{
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export class Tag {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
-    @Column()
-    name: string
-    
-    @ManyToMany(() => Course, course => course.tags)
-    courses: Course[]
+  @Column()
+  name: string
 
-    @CreateDateColumn({type: 'timestamp'})
-    created_At: Date
-  
-    @BeforeInsert()
-    generatedId() {
-      if (this.id) {
-        return;
-      }
-      this.id = randomUUID();
+  @ManyToMany(() => Course, course => course.tags)
+  courses: Course[]
+
+  @CreateDateColumn({ type: 'timestamp' })
+  created_at: Date
+
+  @BeforeInsert()
+  generatedId() {
+    if (this.id) {
+      return
     }
+    this.id = randomUUID()
+  }
 }
